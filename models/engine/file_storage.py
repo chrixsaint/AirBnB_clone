@@ -41,14 +41,14 @@ class FileStorage:
         """
         obj_d = {obj: avail_objs[obj].to_dict() for obj in avail_objs.keys()}
         """write the objects into a file in json format"""     
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as my_file:
-            json.dump(obj_d, my_file)
+        with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
+            json.dump(obj_d, f)
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
-            with open(FileStorage.__file_path, "r", encoding="utf-8") as my_file:
-                obj_d = json.load(my_file)
+            with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
+                obj_d = json.load(f)
                 """
                 It iterates over the values of the obj_d dictionary
                 Each value represents a serialized object stored in the JSON file.
@@ -58,7 +58,6 @@ class FileStorage:
                     retrieves the class name of the current serialized object
                     __class__ is the key used to store the class name of the object
                     I have provided a sample of some serialized objects for better understanding
-
                     {
                         "BaseModel.604fc043-6ba7-420e-b375-9ff4a54b10bf":
                         {
