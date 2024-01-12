@@ -26,24 +26,74 @@ class FileStorage:
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id"""
-        ocname = obj.__class__.__name__
-        FileStorage.__objects["{}.{}".format(ocname, obj.id)] = obj
+        obj_cls_name = obj.__class__.__name__
+        """save the "classname.id" to __objects, this reps the object in the dict"""
+        FileStorage.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj
 
+    """Serialize __objects to the JSON file __file_path."""
     def save(self):
-        """Serialize __objects to the JSON file __file_path."""
-        odict = FileStorage.__objects
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
-        with open(FileStorage.__file_path, "w") as f:
-            json.dump(objdict, f)
+        """retrieve all available objects"""     
+        avail_objs = FileStorage.__objects
+        """
+        loop through the objects and
+        Serialize or convert available objs to the JSON
+        file stored in __file_path.
+        """
+        obj_d = {obj: avail_objs[obj].to_dict() for obj in avail_objs.keys()}
+        """write the objects into a file in json format"""     
+        with open(FileStorage.__file_path, "w", encoding="utf-8") as my_file:
+            json.dump(obj_d, my_file)
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
-            with open(FileStorage.__file_path) as f:
-                objdict = json.load(f)
-                for o in objdict.values():
-                    cls_name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(cls_name)(**o))
+            with open(FileStorage.__file_path, "r", encoding="utf-8") as my_file:
+                obj_d = json.load(my_file)
+                """
+                It iterates over the values of the obj_d dictionary
+                Each value represents a serialized object stored in the JSON file.
+                """
+                for item in obj_d.values():
+                    """
+                    retrieves the class name of the current serialized object
+                    __class__ is the key used to store the class name of the object
+                    I have provided a sample of some serialized objects for better understanding
+
+                    {
+                        "BaseModel.604fc043-6ba7-420e-b375-9ff4a54b10bf":
+                        {
+                            "id": "604fc043-6ba7-420e-b375-9ff4a54b10bf",
+                             "created_at": "2024-01-11T10:39:56.747981",
+                             "updated_at": "2024-01-11T10:39:56.749720",
+                             "first_name": "Betty",
+                             "__class__": "BaseModel"
+                        },
+                        "SecondModel.7804fc043-6ba7-420e-b375-9ff4a54b10bf":
+                        {
+                            "id": "604fc043-6ba7-420e-b375-9ff4a54b10bf",
+                             "created_at": "2024-01-11T10:39:56.747981",
+                             "updated_at": "2024-01-11T10:39:56.749720",
+                             "first_name": "Betty",
+                             "__class__": "SecondModel"
+                        }
+                    }
+                    """
+                    cls_name = item["__class__"]
+                    """
+                    delete the __class__ object, it is no longer needed
+                    we would later pass the other items like id, created_at etc
+                    into an instance that would be dynamically created
+                    and we dont want classnameas part of the "**item" that would be passed
+                    """
+                    del item["__class__"]
+                    """
+                    with the retrieved classname an instance
+                    can be dynamically created using the eval() function.
+                    the **item is passed in as keyword args to the created instance.
+                    my_new_instance = BaseModel(self, **item) this is
+                    what hapened with the eval()
+                    """
+                    self.new(eval(cls_name)(**item))
         except FileNotFoundError:
             return
+ 
