@@ -2,7 +2,7 @@
 """Defines the HBnB console."""
 import cmd
 import re
-from shlex import split
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -74,6 +74,9 @@ def handle_arg_splitting(arg):
         """
         return returned_list
 
+def split_me(arg):
+    splitted_arg = shlex.split(arg)
+    return splitted_arg
 
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter.
@@ -187,7 +190,7 @@ class HBNBCommand(cmd.Cmd):
         Display the string representation of a
         class instance of a given id.
         """
-        splited_arg_list = handle_arg_splitting(arg)
+        splited_arg_list = split_me(arg)
         objdict = storage.all()
         if len(splited_arg_list) == 0:
             print("** class name missing **")
@@ -203,7 +206,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, arg):
         """Usage: destroy <class> <id> or <class>.destroy(<id>)
         Delete a class instance of a given id."""
-        splited_arg_list = handle_arg_splitting(arg)
+        splited_arg_list = split_me(arg)
         objdict = storage.all()
         if len(splited_arg_list) == 0:
             print("** class name missing **")
@@ -221,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
         """Usage: all or all <class> or <class>.all()
         Display string representations of all instances of a given class.
         If no class is specified, displays all instantiated objects."""
-        splited_arg_list = handle_arg_splitting(arg)
+        splited_arg_list = split_me(arg)
         if len(splited_arg_list) > 0 and splited_arg_list[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
@@ -300,5 +303,4 @@ if __name__ == "__main__":
         our HBNBCommand class. it does not have to be created.
         it uses the prompt specified.
     """
-    curr_cmd = HBNBCommand()
-    curr_cmd.cmdloop()
+    HBNBCommand().cmdloop()
