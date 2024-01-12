@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-def parse(arg):
+def handle_arg_splitting(arg):
     """search arg to see if there are square brackets """
     has_sqr_brackets = re.search(r"\[(.*?)\]", arg)
     """
@@ -156,11 +156,16 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_quit(self, arg):
-        """Quit command to exit the program."""
+        """
+        Quit command to exit the program.
+        """
         return True
 
     def do_EOF(self, arg):
-        """EOF signal to exit the program."""
+        """
+        EOF signal to exit the program."
+        Handle End-of-File (Ctrl+D).
+        """
         print("")
         return True
 
@@ -168,7 +173,7 @@ class HBNBCommand(cmd.Cmd):
         """Usage: create <class>
         Create a new class instance and print its id.
         """
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         if len(splited_arg_list) == 0:
             print("** class name missing **")
         elif splited_arg_list[0] not in HBNBCommand.__classes:
@@ -182,7 +187,7 @@ class HBNBCommand(cmd.Cmd):
         Display the string representation of a
         class instance of a given id.
         """
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         objdict = storage.all()
         if len(splited_arg_list) == 0:
             print("** class name missing **")
@@ -198,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, arg):
         """Usage: destroy <class> <id> or <class>.destroy(<id>)
         Delete a class instance of a given id."""
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         objdict = storage.all()
         if len(splited_arg_list) == 0:
             print("** class name missing **")
@@ -216,7 +221,7 @@ class HBNBCommand(cmd.Cmd):
         """Usage: all or all <class> or <class>.all()
         Display string representations of all instances of a given class.
         If no class is specified, displays all instantiated objects."""
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         if len(splited_arg_list) > 0 and splited_arg_list[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
@@ -231,7 +236,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, arg):
         """Usage: count <class> or <class>.count()
         Retrieve the number of instances of a given class."""
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         count = 0
         for obj in storage.all().values():
             if splited_arg_list[0] == obj.__class__.__name__:
@@ -244,7 +249,7 @@ class HBNBCommand(cmd.Cmd):
        <class>.update(<id>, <dictionary>)
         Update a class instance of a given id by adding or updating
         a given attribute key/value pair or dictionary."""
-        splited_arg_list = parse(arg)
+        splited_arg_list = handle_arg_splitting(arg)
         objdict = storage.all()
 
         if len(splited_arg_list) == 0:
@@ -289,4 +294,11 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    """
+        HBNBCommand().cmdloop()
+        the cmdloop() comes with the Cmd base class used to create 
+        our HBNBCommand class. it does not have to be created.
+        it uses the prompt specified.
+    """
+    curr_cmd = HBNBCommand()
+    curr_cmd.cmdloop()
