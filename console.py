@@ -155,9 +155,9 @@ class HBNBCommand(cmd.Cmd):
                 arg_to_dict.keys() returns a view of all the keys in the dictionary.
                 """
                 if command[0] in arg_to_dict.keys():
-                    call = "{} {}".format(splitted_arg_list[0], command[1])
+                    call = f"{splitted_arg_list[0]} {command[1]}"
                     return arg_to_dict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
+        print(f"*** Unknown syntax: {arg}")
         return False
 
     def do_quit(self, arg):
@@ -197,7 +197,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(splitted_arg_list) == 1:
             print("** instance id missing **")
-        elif "{}.{}".format(splitted_arg_list[0], splitted_arg_list[1]) not in all_obj_dict:
+        elif f"{splitted_arg_list[0]}.{splitted_arg_list[1]}" not in all_obj_dict:
             print("** no instance found **")
         else:
             """Please check the provided sample data to understand
