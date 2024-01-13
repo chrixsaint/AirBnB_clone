@@ -19,13 +19,29 @@ class BaseModel:
         self.id = str(uuid4())
         self.created_at = datetime.today()
         self.updated_at = datetime.today()
+        """
+        e.g user = User(name="John", age=25, created_at="2022-01-01T12:00:00.000")
+        """
         if len(kwargs) != 0:
             for k, v in kwargs.items():
+                """
+                handle the datetime items
+                """
                 if k == "created_at" or k == "updated_at":
                     self.__dict__[k] = datetime.strptime(v, iso_date_format)
                 else:
+                    """handle the other items"""
                     self.__dict__[k] = v
         else:
+            """
+            e.g user = User()
+            So, in short, the FileStorage class is designed
+            to handle instances from various places
+            in your code, and the new method gets called explicitly from
+            the __init__ method of other classes, including BaseModel,
+            when instances are created without existing data
+            (i.e., when kwargs is empty).
+            """
             models.storage.new(self)
 
     def save(self):
@@ -40,8 +56,8 @@ class BaseModel:
         the class name of the object.
         """
         dict_copy = self.__dict__.copy()
-        dict_copy["created_at"] = self.created_at.isoformat()
         dict_copy["updated_at"] = self.updated_at.isoformat()
+        dict_copy["created_at"] = self.created_at.isoformat()
         dict_copy["__class__"] = self.__class__.__name__
         return dict_copy
 

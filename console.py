@@ -185,7 +185,8 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_show(self, arg):
-        """Usage: show <class> <id> or <class>.show(<id>)
+        """
+        Usage: show <class> <id> or <class>.show(<id>)
         Display the string representation of a class instance of a given id.
         """
         splitted_arg_list = split_arg(arg)
@@ -199,6 +200,9 @@ class HBNBCommand(cmd.Cmd):
         elif "{}.{}".format(splitted_arg_list[0], splitted_arg_list[1]) not in all_obj_dict:
             print("** no instance found **")
         else:
+            """Please check the provided sample data to understand
+            what is happening
+            """
             print(all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])])
 
     def do_destroy(self, arg):
@@ -256,25 +260,39 @@ class HBNBCommand(cmd.Cmd):
         if len(splitted_arg_list) == 0:
             print("** class name missing **")
             return False
+        """Checks if the class name is provided and exists in the registered classes.
+        """
         if splitted_arg_list[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return False
+        """
+        Checks if the instance ID is provided and if an instance with that ID exists.
+        """
         if len(splitted_arg_list) == 1:
             print("** instance id missing **")
             return False
         if "{}.{}".format(splitted_arg_list[0], splitted_arg_list[1]) not in all_obj_dict.keys():
             print("** no instance found **")
             return False
+        """
+        Checks if the attribute name is provided.
+        """
         if len(splitted_arg_list) == 2:
             print("** attribute name missing **")
             return False
+        """
+        Checks if the value is provided when updating a specific attribute.
+        """
         if len(splitted_arg_list) == 3:
             try:
                 type(eval(splitted_arg_list[2])) != dict
             except NameError:
                 print("** value missing **")
                 return False
-
+        """
+        If all conditions are met, it proceeds to update the specified attribute
+        of the instance with the given value.
+        """
         if len(splitted_arg_list) == 4:
             obj = all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])]
             if splitted_arg_list[2] in obj.__class__.__dict__.keys():
@@ -282,6 +300,10 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[splitted_arg_list[2]] = valtype(splitted_arg_list[3])
             else:
                 obj.__dict__[splitted_arg_list[2]] = splitted_arg_list[3]
+        """
+        If the third argument is a dictionary, it iterates through the key-value pairs
+        and updates the instance's attributes accordingly.
+        """
         elif type(eval(splitted_arg_list[2])) == dict:
             obj = all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])]
             for my_key, val in eval(splitted_arg_list[2]).items():
