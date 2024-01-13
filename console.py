@@ -216,10 +216,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(splitted_arg_list) == 1:
             print("** instance id missing **")
-        elif "{}.{}".format(splitted_arg_list[0], splitted_arg_list[1]) not in all_obj_dict.keys():
+        elif f"{splitted_arg_list[0]}.{splitted_arg_list[1]}" not in all_obj_dict.keys():
             print("** no instance found **")
         else:
-            del all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])]
+            del all_obj_dict[f"{splitted_arg_list[0]}.{splitted_arg_list[1]}"]
             storage.save()
 
     def do_all(self, arg):
