@@ -300,11 +300,10 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[splitted_arg_list[2]] = valtype(splitted_arg_list[3])
             else:
                 obj.__dict__[splitted_arg_list[2]] = splitted_arg_list[3]
-        """
-        If the third argument is a dictionary, it iterates through the key-value pairs
-        and updates the instance's attributes accordingly.
-        """
         elif type(eval(splitted_arg_list[2])) == dict:
+            """checks to see if the value is a dictionary,
+            then iterates and updates every element provided
+            """
             obj = all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])]
             for my_key, val in eval(splitted_arg_list[2]).items():
                 if (my_key in obj.__class__.__dict__.keys() and
