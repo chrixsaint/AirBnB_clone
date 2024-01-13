@@ -271,7 +271,7 @@ class HBNBCommand(cmd.Cmd):
         if len(splitted_arg_list) == 1:
             print("** instance id missing **")
             return False
-        if "{}.{}".format(splitted_arg_list[0], splitted_arg_list[1]) not in all_obj_dict.keys():
+        if f"{splitted_arg_list[0]}.{splitted_arg_list[1]}" not in all_obj_dict.keys():
             print("** no instance found **")
             return False
         """
