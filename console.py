@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
         "Review"
     }
 
-    """Do nothing upon receiving an empty line."""
+    """Do nothing upon receiving an empty line"""
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
         pass
@@ -301,7 +301,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 obj.__dict__[splitted_arg_list[2]] = splitted_arg_list[3]
         elif type(eval(splitted_arg_list[2])) == dict:
-            """checks to see if the value is a dictionary,
+            """checks to see if the value is a dictionary
             then iterates and updates every element provided
             """
             obj = all_obj_dict["{}.{}".format(splitted_arg_list[0], splitted_arg_list[1])]
