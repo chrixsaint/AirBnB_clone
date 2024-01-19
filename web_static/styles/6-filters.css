@@ -23,7 +23,7 @@
 .search-btn:hover {
     opacity: 0.9;
 }
-.amenities{
+.filters .amenities{
     height: 100%;
     width: 25%;
     float: left;
@@ -43,16 +43,16 @@
 .locations:hover{
     overflow: visible;
 }
-.amenities:hover{
+.filters .amenities:hover{
     overflow: visible;
 }
-.amenities h3, .locations h3{
+.filters .amenities h3, .locations h3{
     font-weight: 600;
     margin: 0px;
     margin-top: 17px;
     padding-left: 30px;
 }
-.amenities h4, .locations h4{
+.filters .amenities h4, .locations h4{
     margin: 0px;
     font-weight: 400;
     font-size: 14px;
